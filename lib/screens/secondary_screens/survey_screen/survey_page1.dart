@@ -11,6 +11,7 @@ class Page1 extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Text('Ankietka:'),
           Text('Pytanie 1'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

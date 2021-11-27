@@ -64,57 +64,35 @@ class SettingsCard extends StatelessWidget {
       ),
       child
     ];
-    return Stack(
-      key: key,
-      children: [
-        Container(
+    return Card(
+      elevation: 3,
+      margin: marginTextBox,
+      shadowColor: Theme.of(context).shadowColor,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(10),
+        topRight: Radius.circular(10),
+        bottomRight: Radius.circular(10),
+      )),
+      child: Container(
           width: MediaQuery.of(context).size.width,
-          height: cardHeight,
-          margin: marginContainer,
-          decoration: BoxDecoration(
-              borderRadius: radiusContainer,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.grey.shade700.withOpacity(
-                      0.3), //Theme.of(context).unselectedWidgetColor,
-                  offset: const Offset(0.0, 0.0),
-                ),
-                BoxShadow(
-                  color: Colors.grey.shade400
-                      .withOpacity(0.3), //Theme.of(context).shadowColor,
-                  offset: const Offset(0.0, 0.0),
-                  spreadRadius: -3.0,
-                  blurRadius: 3.0,
-                ),
-              ]),
-        ), //main shape
-        Container(
-            width: MediaQuery.of(context).size.width,
-            height: smallRingRadiusSize,
-            margin: marginTextBox,
-            decoration: BoxDecoration(
-                color: Colors.white, //Theme.of(context).backgroundColor,
-                borderRadius: radiusInnerContainer,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.shade700.withOpacity(
-                          0.6), //Theme.of(context).unselectedWidgetColor,
-                      blurRadius: 3.0,
-                      offset: const Offset(.0, .0),
-                      spreadRadius: 2.0),
-                  BoxShadow(
-                    color: Colors.grey.shade700
-                        .withOpacity(0.6), //Theme.of(context).shadowColor,
-                    offset: const Offset(0.0, 0.0),
-                    spreadRadius: 3.0,
-                    blurRadius: 3.0,
-                  ),
-                ]),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: _items)),
-      ],
+          height: smallRingRadiusSize,
+
+          // decoration: BoxDecoration(
+          //     color: Colors.white, //Theme.of(context).backgroundColor,
+          //     borderRadius: radiusInnerContainer,
+          //     boxShadow: [
+          //       BoxShadow(
+          //           color: Colors.grey.shade500.withOpacity(
+          //               0.6), //Theme.of(context).unselectedWidgetColor,
+          //           blurRadius: 2.0,
+          //           offset: const Offset(.2, .2),
+          //           spreadRadius: 1.0),
+          //     ]),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _items)),
     );
   }
 }

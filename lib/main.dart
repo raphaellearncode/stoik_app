@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:stoik_app/screens/main_screens/screens_exports.dart';
-
+import 'package:stoik_app/utils/custom_page_route.dart';
 import 'model/nav_model.dart';
 import 'model/screen_model.dart';
+import 'package:stoik_app/providers/export_providers.dart';
+
+import 'utils/styles.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -25,6 +29,39 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => GameProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => HomeProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => SettingsProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => RulesProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => EducationProvider(),
+          ),
+        ],
+        child: Consumer<SettingsProvider>(
+          builder: (context, settings, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'StoLik',
+              theme: lightTheme,
+              // ThemeData(
+              //   primarySwatch: Colors.blue,
+              // ), //settings.getTheme(),
+              initialRoute: '/',
+              onGenerateRoute: (route) => onGenerateRoute(route),
+            );
+          },
+        ));
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -32,6 +69,31 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
+  }
+
+  static onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case "/":
+        return CustomPageRoute(
+            child: const MyHomePage(
+              title: 'StoLik',
+            ),
+            settings: settings,
+            direction: AxisDirection.left);
+
+      case "/settings":
+        return CustomPageRoute(
+            child: const SettingsScreen(),
+            settings: settings,
+            direction: AxisDirection.left);
+      default:
+        CustomPageRoute(
+            child: const MyHomePage(
+              title: 'StoLik',
+            ),
+            settings: settings,
+            direction: AxisDirection.left);
+    }
   }
 }
 
@@ -110,28 +172,32 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.grey.shade300,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               key: widget.key,
-              decoration: const BoxDecoration(
+              margin: const EdgeInsets.only(
+                  left: 5.0, top: 10.0, bottom: 10.0, right: 5.0),
+              decoration: BoxDecoration(
                   color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                        color: Colors.black54,
-                        offset: Offset(-0.5, 0),
+                        color: Theme.of(context).shadowColor,
+                        offset: const Offset(0.5, 0.5),
                         blurRadius: 0.5)
                   ]),
               child: NavigationRail(
                 // minWidth: 35,
                 groupAlignment: -0.3,
+
                 leading: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: CircleAvatar(
-                      backgroundColor: Colors.amber.shade400,
+                      backgroundColor: Theme.of(context).indicatorColor,
                       child: const Icon(
                         Icons.person,
                         size: 23,
@@ -141,8 +207,10 @@ class _MyHomePageState extends State<MyHomePage>
                 backgroundColor: Colors.transparent,
                 extended: isRailExtended,
                 labelType: NavigationRailLabelType.none,
-                selectedIconTheme: const IconThemeData(color: Colors.amber),
-                selectedLabelTextStyle: const TextStyle(color: Colors.amber),
+                selectedIconTheme:
+                    IconThemeData(color: Theme.of(context).indicatorColor),
+                selectedLabelTextStyle:
+                    TextStyle(color: Theme.of(context).indicatorColor),
                 destinations: List.generate(
                     _pages.length,
                     (index) => NavigationRailDestination(

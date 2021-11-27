@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stoik_app/widgets/cards/summary_card.dart';
 
 class ScreenD extends StatelessWidget {
   const ScreenD({Key? key}) : super(key: key);
@@ -11,71 +12,32 @@ class ScreenD extends StatelessWidget {
     return Container(
       key: key,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            'STATYSTYKI ',
-            style: GoogleFonts.rubik(
-                fontSize: 30, color: fontColor, fontWeight: FontWeight.w400),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: Text(
+              'Statystyki ',
+              style: GoogleFonts.rubik(
+                  fontSize: 30, color: fontColor, fontWeight: FontWeight.w400),
+            ),
+          ),
+          Image.asset(
+            'assets/images/stats.png',
+            width: MediaQuery.of(context).size.width,
           ),
           SizedBox(
             height: 40,
           ),
-          Text(
-            'Odpowiedzi pozytywne:',
-            style: GoogleFonts.rubik(
-                fontSize: 18, color: fontColor, fontWeight: FontWeight.w400),
+          SummaryCard(
+            title: 'Punkty satysfakcji:',
+            scores: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.greenAccent.shade400,
-                child: Icon(
-                  FontAwesomeIcons.thumbsUp,
-                  size: 15,
-                  color: fontColor,
-                ),
-              ),
-              Text(
-                '20',
-                style: GoogleFonts.rubik(
-                    fontSize: 18,
-                    color: fontColor,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Odpowiedzi negatywne:',
-            style: GoogleFonts.rubik(
-                fontSize: 18, color: fontColor, fontWeight: FontWeight.w400),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.redAccent.shade400,
-                child: Icon(
-                  FontAwesomeIcons.thumbsDown,
-                  size: 15,
-                  color: fontColor,
-                ),
-              ),
-              Text(
-                '12',
-                style: GoogleFonts.rubik(
-                    fontSize: 18,
-                    color: fontColor,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
+          SummaryCard(
+            title: 'Punkty frustracji:',
+            scores: 5,
+            isPositive: false,
           ),
         ],
       ),

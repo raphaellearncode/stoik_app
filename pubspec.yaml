@@ -22,6 +22,13 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   flutter_staggered_animations: ^1.0.0
   share: ^2.0.4 #https://pub.dev/packages/share/example
+  provider: ^5.0.0 #import 'package:provider/provider.dart';
+  carousel_slider: ^4.0.0 #import 'package:carousel_slider/carousel_slider.dart';
+  device_preview: ^0.7.0 #import 'package:device_preview/device_preview.dart'; #https://pub.dev/packages/device_preview
+  shared_preferences: ^2.0.6 #import 'package:shared_preferences/shared_preferences.dart';
+  sqflite: ^2.0.0+4 #import 'package:sqflite/sqflite.dart';
+  simple_animations: ^3.1.1
+  flip_card: ^0.6.0 #https://pub.dev/packages/flip_card/example
 
 dev_dependencies:
   flutter_test:

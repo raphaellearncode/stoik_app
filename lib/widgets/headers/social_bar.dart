@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stoik_app/data/soci_list.dart';
-import 'package:stoik_app/utils/custom_page_route.dart';
 import 'package:stoik_app/widgets/list_builders/col_row_builder.dart';
 import 'package:share/share.dart';
 
@@ -52,7 +51,7 @@ class SocialsBar extends StatelessWidget {
                   listItem.title!,
                   style: Theme.of(context)
                       .textTheme
-                      .headline2!
+                      .headline5!
                       .copyWith(fontSize: socialSubtitleFontSize),
                 ),
               )

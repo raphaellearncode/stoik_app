@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stoik_app/model/learning_model.dart';
 import 'package:stoik_app/widgets/buttons/flat_buttons.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class EducationPage extends StatelessWidget {
   const EducationPage({Key? key, required this.learnData}) : super(key: key);
@@ -17,6 +18,10 @@ class EducationPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Image.asset(
+              learnData.assetPath,
+              width: MediaQuery.of(context).size.width,
+            ),
             Text(learnData.title),
             SizedBox(
               height: 30,
@@ -26,7 +31,7 @@ class EducationPage extends StatelessWidget {
               height: 20,
             ),
             FlatBtn(
-              title: 'Back',
+              title: 'Wróć',
               onPress: () {
                 Navigator.pop(context);
               },

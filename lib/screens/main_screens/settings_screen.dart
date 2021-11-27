@@ -32,6 +32,12 @@ class SettingsScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500),
                     ))),
           ),
+          SliverToBoxAdapter(
+            child: Image.asset(
+              'assets/images/settings.png',
+              width: MediaQuery.of(context).size.width,
+            ),
+          ),
           SliverList(
             delegate: SliverChildListDelegate([
               ColumnBuilder(

@@ -5,11 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EducationCard extends StatelessWidget {
   const EducationCard(
-      {Key? key, required this.title, required this.icon, required this.onTap})
+      {Key? key,
+      required this.title,
+      required this.onTap,
+      required this.assetPath})
       : super(key: key);
 
   final String title;
-  final IconData icon;
+  final String assetPath;
   final Function onTap;
 
   @override
@@ -19,7 +22,8 @@ class EducationCard extends StatelessWidget {
         onTap();
       },
       child: Card(
-        elevation: 5,
+        elevation: 3,
+        shadowColor: Theme.of(context).shadowColor,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
@@ -28,13 +32,13 @@ class EducationCard extends StatelessWidget {
         )),
         child: Stack(children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
               bottomRight: Radius.circular(10),
             ),
             child: Image.asset(
-              'assets/images/edu.png',
+              assetPath,
               fit: BoxFit.cover,
             ),
           ),
@@ -42,16 +46,11 @@ class EducationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(
-                  icon,
-                  color: Colors.amber,
-                  size: 18,
-                ),
+              const SizedBox(
+                height: 50,
               ),
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(10),
                 ),
                 child: BackdropFilter(
@@ -60,12 +59,12 @@ class EducationCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5.0, vertical: 2.0),
                       width: 200,
-                      //color: Colors.grey.withOpacity(0),
+                      color: Colors.white.withOpacity(0.5),
                       child: Text(
                         title,
                         style: GoogleFonts.rubik(
                             fontSize: 15,
-                            color: Colors.white,
+                            color: Colors.black,
                             fontWeight: FontWeight.w400),
                       )),
                 ),

@@ -43,27 +43,32 @@ class _SurveyPageState extends State<SurveyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
-          PageView.builder(
-              physics: const BouncingScrollPhysics(
-                  parent: NeverScrollableScrollPhysics()),
-              itemCount: _surveyPages.length,
-              itemBuilder: (context, index) {
-                return _surveyPages.map((e) => e).toList().elementAt(index);
-              }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              FlatBtn(
-                title: 'Następna',
-                onPress: () {
-                  _onPageChange();
-                },
-              ),
-            ],
+          Expanded(
+            child: PageView.builder(
+                physics: const BouncingScrollPhysics(
+                    parent: NeverScrollableScrollPhysics()),
+                itemCount: _surveyPages.length,
+                itemBuilder: (context, index) {
+                  return _surveyPages.map((e) => e).toList().elementAt(index);
+                }),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FlatBtn(
+                  title: 'Następna',
+                  onPress: () {
+                    _onPageChange();
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

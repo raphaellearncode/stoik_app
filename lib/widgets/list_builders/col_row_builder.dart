@@ -23,6 +23,8 @@ class ColumnBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimationLimiter(
         child: Column(
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
       children: AnimationConfiguration.toStaggeredList(
         duration: const Duration(milliseconds: 375),
         childAnimationBuilder: (widget) => ScaleAnimation(
