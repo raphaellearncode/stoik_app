@@ -11,7 +11,7 @@ class SettingsProvider extends ChangeNotifier {
 
   int diceShuffleDuration = 2;
 
-  int cardSets = 3;
+  int cardSets = 5;
   //TODO: mailchimp url
 
   //todo: theme data
