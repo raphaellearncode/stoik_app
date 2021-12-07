@@ -27,12 +27,12 @@ class RulesProvider extends ChangeNotifier {
   final List<RulesModel> rulesList = [
     RulesModel(
       'Krok 1',
-      '''1. Następnie rzuca Gracz rozpoczynający czyta na głos Kartę Historii kostką. Jeśli wypadnie "1" gracz z trzech dostępnych Kart Odpowiedzi wybiera losowo jedną. Jeśli wypadnie "2", gracz może losowo wybrać dwie karty.''',
+      '''Gracz rozpoczynający czyta na głos Kartę Historii 1 Następnie rzuca kostką. Jeśli wypadnie "1" gracz z trzech dostępnych Kart Odpowiedzi wybiera losowo jedną. Jeśli wypadnie "2", gracz może losowo wybrać dwie Karty Odpowiedzi.''',
     ),
     RulesModel('Krok 2',
         '''Zadaniem gracza jest wybranie odpowiedzi najbardziej nawiązującej do postawy stoickiej. Jeśli wybrał jedynie jedna kartę - nie ma możliwości wyboru. Jeśli zaś dwie - wybiera postawę zbliżoną do stoickiej lub stoicką.'''),
     RulesModel('Krok 3',
-        '''Jeśli gracz nie jest zadowolony z odpowiedzi - może skorzystać z Kart Losowych. W zamian za punkt satysfakcji może wylosować jedną Kartę Losową. Karty Losowe mają wysokie punktowanie dodatnie lub ujemne, także zawsze wiążą się z ryzykiem.'''),
+        '''Jeśli gracz nie jest zadowolony z odpowiedzi - może skorzystać z Kart Losowych. W zamian za punkt satysfakcji może wylosować jedną Kartę Losową. Karty Losowe mają wysokie punktowanie dodatnie lub ujemne, także zawsze wiążą się z ryzykiem. Kiedy gracz zdecyduje się na zakupienie Karty Losowej - nie może już wrócić do wyboru Karty Odpowiedzi.'''),
     RulesModel('Krok 4',
         '''Gracz sprawdza w Liście Punktów ile żetonów otrzymuje lub oddaje za wybraną odpowiedź. Przykładowo, jeśli wybrał odpowiedź o numerze 2B, sprawdza ilość punktów przypisanych do tej karty. Tutaj następuje koniec tury'''),
     RulesModel('Krok 5',

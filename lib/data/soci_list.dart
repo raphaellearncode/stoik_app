@@ -7,12 +7,12 @@ class SocialList {
     SocialModel(
         title: "www",
         icon: FontAwesomeIcons.globe,
-        link: 'https://r85-noti.herokuapp.com/'),
+        link: 'https://stoikapp.herokuapp.com/'),
     SocialModel(
         title: "facebook",
-        icon: FontAwesomeIcons.youtube,
+        icon: FontAwesomeIcons.facebook,
         link: 'https://www.facebook.com'),
-    SocialModel(title: "share", icon: FontAwesomeIcons.share, link: ''),
+    SocialModel(title: "udostępnij", icon: FontAwesomeIcons.share, link: ''),
   ];
 
   UnmodifiableListView<SocialModel> get socials {

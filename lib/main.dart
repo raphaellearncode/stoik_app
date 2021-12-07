@@ -2,12 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stoik_app/screens/main_screens/launcher_screen.dart';
 import 'package:stoik_app/screens/main_screens/screens_exports.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
+import 'package:stoik_app/widgets/cards/logo_card.dart';
 import 'model/nav_model.dart';
 import 'model/screen_model.dart';
 import 'package:stoik_app/providers/export_providers.dart';
-
 import 'utils/styles.dart';
 
 void main() {
@@ -32,7 +33,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
+            create: (context) => OnBoardingProvider(),
+          ),
+          ChangeNotifierProvider(
             create: (context) => GameProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => StatsProvider(),
           ),
           ChangeNotifierProvider(
             create: (context) => HomeProvider(),
@@ -67,7 +74,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 
@@ -75,9 +82,10 @@ class MyApp extends StatelessWidget {
     switch (settings.name) {
       case "/":
         return CustomPageRoute(
-            child: const MyHomePage(
-              title: 'StoLik',
-            ),
+            child: const LaunchScreen(),
+            // const MyHomePage(
+            //   title: 'StoLik',
+            // ),
             settings: settings,
             direction: AxisDirection.left);
 
@@ -88,25 +96,23 @@ class MyApp extends StatelessWidget {
             direction: AxisDirection.left);
       default:
         CustomPageRoute(
-            child: const MyHomePage(
-              title: 'StoLik',
-            ),
+            child: const LaunchScreen(),
             settings: settings,
             direction: AxisDirection.left);
     }
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late PageController _pageController;
   int _currentPage = 0;
@@ -179,31 +185,33 @@ class _MyHomePageState extends State<MyHomePage>
           children: [
             Container(
               key: widget.key,
-              margin: const EdgeInsets.only(
-                  left: 5.0, top: 10.0, bottom: 10.0, right: 5.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Theme.of(context).shadowColor,
-                        offset: const Offset(0.5, 0.5),
-                        blurRadius: 0.5)
-                  ]),
+              // margin: const EdgeInsets.only(
+              //     left: 5.0, top: 10.0, bottom: 10.0, right: 5.0),
+              // decoration: BoxDecoration(
+              //     color: Colors.white,
+              //     borderRadius: const BorderRadius.all(Radius.circular(10)),
+              //     boxShadow: <BoxShadow>[
+              //       BoxShadow(
+              //           color: Theme.of(context).shadowColor,
+              //           offset: const Offset(0.5, 0.5),
+              //           blurRadius: 0.5)
+              //     ]),
               child: NavigationRail(
                 // minWidth: 35,
                 groupAlignment: -0.3,
 
-                leading: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).indicatorColor,
-                      child: const Icon(
-                        Icons.person,
-                        size: 23,
-                        color: Colors.white,
-                      ),
-                    )),
+                leading: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: SmallLogo()
+                    // CircleAvatar(
+                    //   backgroundColor: Theme.of(context).indicatorColor,
+                    //   child: const Icon(
+                    //     Icons.person,
+                    //     size: 23,
+                    //     color: Colors.white,
+                    //   ),
+                    // )
+                    ),
                 backgroundColor: Colors.transparent,
                 extended: isRailExtended,
                 labelType: NavigationRailLabelType.none,
@@ -231,6 +239,14 @@ class _MyHomePageState extends State<MyHomePage>
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: VerticalDivider(
+                thickness: 0.5,
+                width: 0.5,
+                color: Colors.grey.shade700,
+              ),
+            ),
             Expanded(
               child: SlideTransition(
                 position: _menuAnimation,
@@ -240,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage>
                       key: widget.key,
                       child: PageView.builder(
                           physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
+                              parent: NeverScrollableScrollPhysics()),
                           itemCount: _pages.length,
                           controller: _pageController,
                           onPageChanged: _onPageChange,

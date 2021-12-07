@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stoik_app/main.dart';
 import 'package:stoik_app/providers/export_providers.dart';
-import 'package:stoik_app/screens/secondary_screens/survey_screen/survey_screen.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
 import 'package:stoik_app/widgets/cards/education_card.dart';
 import 'package:stoik_app/widgets/cards/sentence_card.dart';
@@ -24,7 +23,7 @@ class SummaryPage extends StatelessWidget {
         body: Consumer3<GameProvider, HomeProvider, SettingsProvider>(
           builder:
               (context, gameProvider, homeProvider, settingsProvider, child) {
-            final daySentence = homeProvider.sentence;
+            //  final daySentence = homeProvider.sentence;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,11 +35,7 @@ class SummaryPage extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.w500),
                 ),
-                SentenceCard(
-                  imgAssets: daySentence.assetPath,
-                  description: daySentence.description,
-                  author: daySentence.title,
-                ),
+                SentenceCard(),
                 SizedBox(
                   height: 20,
                 ),
@@ -72,8 +67,12 @@ class SummaryPage extends StatelessWidget {
                   'Podziel się wrażeniami:',
                   style: GoogleFonts.rubik(
                       fontSize: 15,
+                      height: 2.0,
                       color: Colors.black,
                       fontWeight: FontWeight.w400),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,15 +82,16 @@ class SummaryPage extends StatelessWidget {
                       width: 120,
                       height: 120,
                       child: EducationCard(
-                        title: 'Ankieta',
-                        assetPath: 'assets/images/survey.png',
+                        title: 'Opinia',
+                        assetPath: 'assets/images/newsletter.png',
                         onTap: () async {
                           gameProvider.resetGame();
-                          await Navigator.push(
-                              context,
-                              CustomPageRoute(
-                                  child: SurveyPage(),
-                                  direction: AxisDirection.up));
+                          // await Navigator.push(
+                          //     context,
+                          //     CustomPageRoute(
+                          //         child: SurveyPage(),
+                          //         direction: AxisDirection.up)
+                          // );
                         },
                       ),
                     ),
@@ -106,7 +106,7 @@ class SummaryPage extends StatelessWidget {
                           await Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MyHomePage(
+                                builder: (context) => HomePage(
                                   title: 'StoLik',
                                 ),
                               ),

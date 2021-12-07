@@ -12,6 +12,7 @@ import 'package:stoik_app/model/soci_model.dart';
 import 'package:stoik_app/providers/export_providers.dart';
 import 'package:stoik_app/screens/secondary_screens/game_screen/summary_screen.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
+import 'package:stoik_app/widgets/ListBuilders/answer_list.dart';
 import 'package:stoik_app/widgets/buttons/flat_buttons.dart';
 import 'package:stoik_app/widgets/cards/game_play_card.dart';
 import 'package:stoik_app/widgets/cards/game_inner_card.dart';
@@ -43,13 +44,20 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
   late FlipCardController _flipCardAnswerController;
 
   late AnimationController _animationController;
-  late Animation<double> scaleDown;
+  // late AnimationController _animationListController;
+  late Animation<double> fade;
   late Animation<Offset> moveDice;
 
   final List<AnswerModel> _answersList = [];
 
+  final List<AnswerModel> _bonusAnswersList = [];
+
   int get _answerListCounter {
     return 3; //_answersList.length;
+  }
+
+  int get _bonusAnswerListCounter {
+    return _bonusAnswersList.length - 3;
   }
 
   int cardTypeSetter = 2;
@@ -59,6 +67,9 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
       //widget.history.answers.removeRange(3, 5);
       for (var item in widget.history.answers) {
         _answersList.add(item);
+      }
+      for (var item in widget.history.answers.reversed) {
+        _bonusAnswersList.add(item);
       }
     });
   }
@@ -107,6 +118,8 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
 
     moveDice = Tween<Offset>(begin: Offset.zero, end: const Offset(1.5, -6.0))
         .animate(_animationController);
+
+    //  fade = Tween<double>(begin: 1, end: 0).animate(_animationListController);
   }
 
   @override
@@ -131,6 +144,7 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
     _flipCardAnswerController.toggleCard();
   }
 
+  /// front image card
   Widget _historyFlipCard(context) {
     return SizedBox(
       width: 250,
@@ -154,6 +168,7 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
     );
   }
 
+  /// inner card
   Widget _backCard(BuildContext context) {
     return GameInnerCard(
       historyNumber: '${widget.history.historyNumber}',
@@ -162,97 +177,203 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
     );
   }
 
-  Widget _answerFlipCard(
-      BuildContext context, AnswerModel answer, int cardType) {
-    return SizedBox(
-      // width: 175,
-      height: 420,
-      child: FlipCard(
-        direction: FlipDirection.HORIZONTAL,
-        speed: 500,
-        controller: _flipCardAnswerController,
-        onFlipDone: (status) {
-          print(status);
-        },
-        front: GamePlayCard(
-          index: widget.history.historyNumber,
-          heroTag: 'ANSWER_CARD${answer.answerTag}',
-          historyNumber: widget.history.historyNumber,
-          title: '',
-          description: '',
-          cardType: cardType,
-        ),
-        back: GameInnerCard(
-          title: ' ',
-          cardType: cardType,
-          historyNumber: '${widget.history.historyNumber} ${answer.answerTag}',
-          description: answer.answerDescription,
-        ),
-      ),
+  // /// build answer card front + back
+  // Widget _answerFlipCard(
+  //     BuildContext context, AnswerModel answer, int cardType) {
+  //   return SizedBox(
+  //     // width: 175,
+  //     height: 420,
+  //     child: FlipCard(
+  //       direction: FlipDirection.HORIZONTAL,
+  //       speed: 500,
+  //       controller: _flipCardAnswerController,
+  //       onFlipDone: (status) {
+  //         print(status);
+  //       },
+  //       front: GamePlayCard(
+  //         index: widget.history.historyNumber,
+  //         heroTag: 'ANSWER_CARD${answer.answerTag}',
+  //         historyNumber: widget.history.historyNumber,
+  //         title: '',
+  //         description: '',
+  //         cardType: cardType,
+  //       ),
+  //       back: GameInnerCard(
+  //         title: ' ',
+  //         cardType: cardType,
+  //         historyNumber: '${widget.history.historyNumber} ${answer.answerTag}',
+  //         description: answer.answerDescription,
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // /// pop out answer dialog
+  // Widget _showDialog(
+  //     BuildContext context, Widget child, List<Widget> actionChild) {
+  //   return AlertDialog(
+  //       title: Text(
+  //         'Karta odpowiedzi',
+  //         style: Theme.of(context).textTheme.headline1,
+  //       ),
+  //       alignment: Alignment.bottomCenter,
+  //       actionsAlignment: MainAxisAlignment.spaceEvenly,
+  //       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+  //       elevation: 3,
+  //       shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.all(
+  //         Radius.circular(10),
+  //       )),
+  //       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+  //       content: child,
+  //       actions: actionChild
+  //
+  //       // <Widget>[
+  //       //   // FlatBtn(
+  //       //   //   title: 'Dobierz karty',
+  //       //   //   onPress: () {},
+  //       //   // ),
+  //       //
+  //       //   Consumer2<GameProvider, SettingsProvider>(
+  //       //     builder: (context, game, settings, child) {
+  //       //       return Row(
+  //       //         children: [
+  //       //           FlatBtn(
+  //       //             title: 'Zmień kartę',
+  //       //             onPress: () {
+  //       //               toggleFlipAnswerCard();
+  //       //
+  //       //               Future.delayed(const Duration(milliseconds: 300))
+  //       //                   .then((value) => Navigator.pop(context));
+  //       //               // .whenComplete(() => replaceRandomCards());
+  //       //             },
+  //       //           ),
+  //       //           FlatBtn(
+  //       //             title: 'Odpowiedz',
+  //       //             onPress: () async {
+  //       //               game.gameSetCounter(settings.cardSets);
+  //       //               game.scoreCounter();
+  //       //               await Navigator.push(
+  //       //                   context,
+  //       //                   CustomPageRoute(
+  //       //                       child: game.isGameFinished
+  //       //                           ? const SummaryPage()
+  //       //                           : const GameScreen(),
+  //       //                       direction: AxisDirection.up));
+  //       //             },
+  //       //           )
+  //       //         ],
+  //       //       );
+  //       //     },
+  //       //   ),
+  //       // ],
+  //       );
+  // }
+
+  Widget _answerList(BuildContext context) {
+    return AnswerList(
+      answers: _answersList,
+      listCounter: _answerListCounter,
+      historyNumber: widget.history.historyNumber,
+      cardController: _flipCardAnswerController,
+      toggleCard: () {
+        _flipCardAnswerController.toggleCard();
+      },
+      cardType: 2,
     );
   }
 
-  Widget _showDialog(
-      BuildContext context, Widget child, List<Widget> actionChild) {
-    return AlertDialog(
-        title: Text(
-          'Karta odpowiedzi',
-          style: Theme.of(context).textTheme.headline1,
-        ),
-        alignment: Alignment.bottomCenter,
-        actionsAlignment: MainAxisAlignment.spaceEvenly,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 3,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        )),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-        content: child,
-        actions: actionChild
-
-        // <Widget>[
-        //   // FlatBtn(
-        //   //   title: 'Dobierz karty',
-        //   //   onPress: () {},
-        //   // ),
-        //
-        //   Consumer2<GameProvider, SettingsProvider>(
-        //     builder: (context, game, settings, child) {
-        //       return Row(
-        //         children: [
-        //           FlatBtn(
-        //             title: 'Zmień kartę',
-        //             onPress: () {
-        //               toggleFlipAnswerCard();
-        //
-        //               Future.delayed(const Duration(milliseconds: 300))
-        //                   .then((value) => Navigator.pop(context));
-        //               // .whenComplete(() => replaceRandomCards());
-        //             },
-        //           ),
-        //           FlatBtn(
-        //             title: 'Odpowiedz',
-        //             onPress: () async {
-        //               game.gameSetCounter(settings.cardSets);
-        //               game.scoreCounter();
-        //               await Navigator.push(
-        //                   context,
-        //                   CustomPageRoute(
-        //                       child: game.isGameFinished
-        //                           ? const SummaryPage()
-        //                           : const GameScreen(),
-        //                       direction: AxisDirection.up));
-        //             },
-        //           )
-        //         ],
-        //       );
-        //     },
-        //   ),
-        // ],
-        );
+  Widget _bonusList(BuildContext context) {
+    return AnswerList(
+      answers: _bonusAnswersList,
+      listCounter: _bonusAnswerListCounter,
+      historyNumber: widget.history.historyNumber,
+      cardController: _flipCardAnswerController,
+      toggleCard: () {
+        _flipCardAnswerController.toggleCard();
+      },
+      cardType: 3,
+    );
   }
 
+//   SizedBox(
+  //   height: 220,
+  //   child: AnimationLimiter(
+  //     child: GridView.count(
+  //       padding: const EdgeInsets.all(5.0),
+  //       physics: const BouncingScrollPhysics(
+  //           parent: AlwaysScrollableScrollPhysics()),
+  //       scrollDirection: Axis.horizontal,
+  //       crossAxisSpacing: 3.0,
+  //       shrinkWrap: true,
+  //       mainAxisSpacing: 3.0,
+  //       crossAxisCount: 1,
+  //       childAspectRatio: 1.7,
+  //       children: AnimationConfiguration.toStaggeredList(
+  //           duration: const Duration(milliseconds: 375),
+  //           childAnimationBuilder: (widget) => ScaleAnimation(
+  //                 scale: 0.5,
+  //                 child: FadeInAnimation(child: widget),
+  //               ),
+  //           children: List.generate(
+  //               _bonusAnswerListCounter, //widget.history.answers.length,
+  //               (index) {
+  //             final answerList =
+  //                 // widget
+  //                 //     .history
+  //                 //     .answers[index];
+  //                 _bonusAnswersList[index];
+  //             return GestureDetector(
+  //               onTap: () async {
+  //                 Navigator.of(context).push(PageRouteBuilder(
+  //                     opaque: false,
+  //                     barrierColor: Colors.black54.withOpacity(0.5),
+  //                     transitionDuration: const Duration(milliseconds: 700),
+  //                     reverseTransitionDuration:
+  //                         const Duration(milliseconds: 700),
+  //                     pageBuilder: (context, animation, scondaryAnimation) =>
+  //                         _showDialog(
+  //                             context,
+  //                             _answerFlipCard(context, answerList, 3),
+  //                             <Widget>[
+  //                               Row(
+  //                                 mainAxisAlignment:
+  //                                     MainAxisAlignment.spaceEvenly,
+  //                                 crossAxisAlignment:
+  //                                     CrossAxisAlignment.center,
+  //                                 children: [
+  //                                   FlatBtn(
+  //                                     title: 'Odpowiedz',
+  //                                     onPress: () async {
+  //                                       // gameProvider.gameSetCounter(settingsProvider.cardSets);
+  //                                       // gameProvider.scoreCounter(answerList.scoresPositive, answerList.scoresNegative);
+  //                                       // await Navigator.push(context, CustomPageRoute(child: gameProvider.isGameFinished ? const SummaryPage() : const GameScreen(), direction: AxisDirection.up));
+  //                                     },
+  //                                   )
+  //                                 ],
+  //                               ),
+  //                             ]),
+  //                     transitionsBuilder:
+  //                         (context, animation, secondaryAnimation, child) {
+  //                       return child;
+  //                     }));
+  //                 Future.delayed(const Duration(seconds: 1)).then(
+  //                     (value) => _flipCardAnswerController.toggleCard());
+  //               },
+  //               child: GamePlayCard(
+  //                 shrink: true,
+  //                 index: index,
+  //                 heroTag: 'ANSWER_CARD${answerList.answerTag}',
+  //                 historyNumber: widget.history.historyNumber,
+  //                 title: '',
+  //                 description: answerList.answerDescription,
+  //                 cardType: 3,
+  //               ),
+  //             );
+  //           })),
+  //     ),
+  //   ),
+  // );
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -300,142 +421,33 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 8.0),
-                                child: Text(
-                                  '${gameProvider.choices} SZANS${gameProvider.choices == 1 ? 'A' : 'E'} + bonus 1 z ${gameProvider.choices} losow${gameProvider.choices == 1 ? 'ej' : 'ych'} ',
-                                  style: Theme.of(context).textTheme.headline1,
+                                child: RichText(
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                      text: 'Wybierz kartę \n',
+                                      style:
+                                          Theme.of(context).textTheme.headline1,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                '(masz ${gameProvider.choices} prub${gameProvider.choices == 1 ? 'ę' : 'y'} lub \n możesz dobrać 1 z 2 kart losowych za 1 pkt. satysfakcji)',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1!
+                                                .copyWith(
+                                                    fontSize: 12, height: 1.5))
+                                      ]),
                                 ),
                               ),
-                              Expanded(
-                                  flex: 4,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Opacity(
-                                        opacity: 1,
-                                        child: SizedBox(
-                                          height: 220,
-                                          child: AnimationLimiter(
-                                            child: GridView.count(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              physics: const BouncingScrollPhysics(
-                                                  parent:
-                                                      AlwaysScrollableScrollPhysics()),
-                                              scrollDirection: Axis.horizontal,
-                                              crossAxisSpacing: 3.0,
-                                              shrinkWrap: true,
-                                              mainAxisSpacing: 3.0,
-                                              crossAxisCount: 1,
-                                              childAspectRatio: 1.7,
-                                              children: AnimationConfiguration
-                                                  .toStaggeredList(
-                                                      duration: const Duration(
-                                                          milliseconds: 375),
-                                                      childAnimationBuilder:
-                                                          (widget) =>
-                                                              ScaleAnimation(
-                                                                scale: 0.5,
-                                                                child: FadeInAnimation(
-                                                                    child:
-                                                                        widget),
-                                                              ),
-                                                      children: List.generate(
-                                                          _answerListCounter, //widget.history.answers.length,
-                                                          (index) {
-                                                        final answerList =
-                                                            // widget
-                                                            //     .history
-                                                            //     .answers[index];
-                                                            _answersList[index];
-                                                        return GestureDetector(
-                                                          onTap: () async {
-                                                            Navigator.of(context).push(
-                                                                PageRouteBuilder(
-                                                                    opaque:
-                                                                        false,
-                                                                    barrierColor: Colors
-                                                                        .black54
-                                                                        .withOpacity(
-                                                                            0.5),
-                                                                    transitionDuration:
-                                                                        const Duration(
-                                                                            milliseconds:
-                                                                                700),
-                                                                    reverseTransitionDuration:
-                                                                        const Duration(
-                                                                            milliseconds:
-                                                                                700),
-                                                                    pageBuilder: (context,
-                                                                            animation,
-                                                                            scondaryAnimation) =>
-                                                                        _showDialog(
-                                                                            context,
-                                                                            _answerFlipCard(
-                                                                                context,
-                                                                                answerList,
-                                                                                cardTypeSetter),
-                                                                            <
-                                                                                Widget>[
-                                                                              Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                children: [
-                                                                                  FlatBtn(
-                                                                                    title: 'Zmień kartę',
-                                                                                    onPress: () {
-                                                                                      toggleFlipAnswerCard();
-
-                                                                                      Future.delayed(const Duration(milliseconds: 300)).then((value) => Navigator.pop(context));
-                                                                                      // .whenComplete(() => replaceRandomCards());
-                                                                                    },
-                                                                                  ),
-                                                                                  FlatBtn(
-                                                                                    title: 'Odpowiedz',
-                                                                                    onPress: () async {
-                                                                                      gameProvider.gameSetCounter(settingsProvider.cardSets);
-                                                                                      gameProvider.scoreCounter(answerList.scoresPositive, answerList.scoresNegative);
-                                                                                      await Navigator.push(context, CustomPageRoute(child: gameProvider.isGameFinished ? const SummaryPage() : const GameScreen(), direction: AxisDirection.up));
-                                                                                    },
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ]),
-                                                                    transitionsBuilder: (context,
-                                                                        animation,
-                                                                        secondaryAnimation,
-                                                                        child) {
-                                                                      return child;
-                                                                    }));
-                                                            Future.delayed(
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            1))
-                                                                .then((value) =>
-                                                                    _flipCardAnswerController
-                                                                        .toggleCard());
-                                                          },
-                                                          child: GamePlayCard(
-                                                            shrink: true,
-                                                            index: index,
-                                                            heroTag:
-                                                                'ANSWER_CARD${answerList.answerTag}',
-                                                            historyNumber: widget
-                                                                .history
-                                                                .historyNumber,
-                                                            title: '',
-                                                            description: answerList
-                                                                .answerDescription,
-                                                            cardType:
-                                                                cardTypeSetter,
-                                                          ),
-                                                        );
-                                                      })),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  _bonusList(context),
+                                  _answerList(context),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -443,7 +455,12 @@ class _GameDiceState extends State<GameDice> with TickerProviderStateMixin {
                           Visibility(
                             visible: showDice,
                             child: Column(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 Text(
                                   'RZUĆ KOSTKĄ',
                                   style: GoogleFonts.rubik(

@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.r85.stoik_app.stoik_app">
    <application
-        android:label="stoik_app"
+        android:label="Stolik"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/stoik_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

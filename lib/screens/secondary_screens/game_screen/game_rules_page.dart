@@ -120,14 +120,14 @@ class GameRulesScreen extends StatelessWidget {
                         ),
                       ]),
                     ),
-                    SliverToBoxAdapter(
-                      child: FlatBtn(
-                        title: 'Rozumiem',
-                        onPress: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
+                    // SliverToBoxAdapter(
+                    //   child: FlatBtn(
+                    //     title: 'Rozumiem',
+                    //     onPress: () {
+                    //       Navigator.pop(context);
+                    //     },
+                    //   ),
+                    // ),
                     const SliverToBoxAdapter(
                         child: SizedBox(
                       height: 100,
@@ -136,7 +136,7 @@ class GameRulesScreen extends StatelessWidget {
             );
           },
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pop(context);

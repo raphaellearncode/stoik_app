@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stoik_app/data/soci_list.dart';
+import 'package:stoik_app/utils/custom_page_route.dart';
 import 'package:stoik_app/widgets/list_builders/col_row_builder.dart';
 import 'package:share/share.dart';
+import 'package:stoik_app/widgets/web_link_page/web_link.dart';
 
 class SocialsBar extends StatelessWidget {
   const SocialsBar({Key? key}) : super(key: key);
@@ -22,13 +24,13 @@ class SocialsBar extends StatelessWidget {
               Share.share(
                   'https://play.google.com/store/apps/details?id=org.r85.calendar_todo');
             } else {
-              // await Navigator.push(
-              //     context,
-              //     CustomPageRoute(
-              //         child: Web(
-              //           link: listItem.link!,
-              //         ),
-              //         direction: AxisDirection.up));
+              await Navigator.push(
+                  context,
+                  CustomPageRoute(
+                      child: Web(
+                        link: listItem.link!,
+                      ),
+                      direction: AxisDirection.up));
             }
           },
           child: Column(

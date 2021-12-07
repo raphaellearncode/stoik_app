@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stoik_app/providers/education_provider/education_provider.dart';
 import 'package:stoik_app/screens/secondary_screens/education_page/education_page.dart';
+import 'package:stoik_app/screens/secondary_screens/education_page/stoic_page.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
 import 'package:stoik_app/widgets/cards/education_card.dart';
 import 'package:provider/provider.dart';
@@ -19,15 +20,13 @@ class EducationScreen extends StatelessWidget {
           key: key,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                child: Text(
-                  'Edukacja',
-                  style: GoogleFonts.rubik(fontSize: 30, color: Colors.black),
-                ),
+                child: Text('Edukacja',
+                    style: Theme.of(context).textTheme.headline1),
               ),
               Expanded(
                 child: AnimationLimiter(
@@ -58,9 +57,13 @@ class EducationScreen extends StatelessWidget {
                               await Navigator.push(
                                   context,
                                   CustomPageRoute(
-                                      child: EducationPage(
-                                        learnData: list,
-                                      ),
+                                      child: index != 1
+                                          ? EducationPage(
+                                              learnData: list,
+                                            )
+                                          : StoicPage(
+                                              title: list.title,
+                                            ),
                                       direction: AxisDirection.up));
                             },
                           );

@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingsCard extends StatelessWidget {
@@ -6,33 +9,33 @@ class SettingsCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.description,
-    required this.child,
+    required this.onTap,
+    required this.iconColor,
   }) : super(key: key);
 
   final String title;
   final String description;
-  final Widget child;
+  final Function onTap;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
     var titleFontSize = 12.0; //SizeInfo.settingsCardTitleFontSize;
     var descriptionFontSize = 10.0; //SizeInfo.settingsCardDescriptionFontSize;
     var cardHeight = 60.0; //SizeInfo.settingsCardHeight;
+    var iconSize = 15.0;
     double smallRingRadiusSize = cardHeight - 17;
     const textPadding = EdgeInsets.symmetric(horizontal: 6.0);
 
-    const marginContainer = EdgeInsets.all(8.0);
-    const marginTextBox = EdgeInsets.all(16);
-
-    const radiusContainer = BorderRadius.all(Radius.circular(15));
-    const radiusInnerContainer = BorderRadius.all(Radius.circular(10));
+    const innerPadding = EdgeInsets.all(5.0);
+    const marginTextBox = EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0);
 
     List<Widget> _items = [
       Expanded(
         child: Padding(
           padding: textPadding,
           child: RichText(
-            maxLines: 2,
+            maxLines: 3,
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
                 text: '$title\n',
@@ -51,6 +54,7 @@ class SettingsCard extends StatelessWidget {
                     style: GoogleFonts.rubik(
                         fontSize: descriptionFontSize,
                         color: Colors.black,
+                        height: 1.5,
                         fontWeight: FontWeight.w300),
 
                     // Theme.of(context)
@@ -62,37 +66,52 @@ class SettingsCard extends StatelessWidget {
           ),
         ),
       ),
-      child
+      IconButton(
+          alignment: Alignment.center,
+          onPressed: () {
+            onTap();
+          },
+          splashRadius: 10,
+          splashColor: Colors.transparent,
+          icon:
+              Icon(FontAwesomeIcons.powerOff, size: iconSize, color: iconColor))
+      //child
     ];
     return Card(
-      elevation: 3,
       margin: marginTextBox,
-      shadowColor: Theme.of(context).shadowColor,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
-        bottomRight: Radius.circular(10),
-      )),
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: smallRingRadiusSize,
-
-          // decoration: BoxDecoration(
-          //     color: Colors.white, //Theme.of(context).backgroundColor,
-          //     borderRadius: radiusInnerContainer,
-          //     boxShadow: [
-          //       BoxShadow(
-          //           color: Colors.grey.shade500.withOpacity(
-          //               0.6), //Theme.of(context).unselectedWidgetColor,
-          //           blurRadius: 2.0,
-          //           offset: const Offset(.2, .2),
-          //           spreadRadius: 1.0),
-          //     ]),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: _items)),
+      child: Padding(
+        padding: innerPadding,
+        child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: smallRingRadiusSize,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: _items)),
+      ),
     );
+    //   ClipRRect(
+    //   borderRadius: const BorderRadius.only(
+    //     topLeft: Radius.circular(10),
+    //     topRight: Radius.circular(10),
+    //     bottomRight: Radius.circular(10),
+    //   ),
+    //   child: BackdropFilter(
+    //     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+    //     child: Card(
+    //       margin: marginTextBox,
+    //       child: Padding(
+    //         padding: innerPadding,
+    //         child: SizedBox(
+    //             width: MediaQuery.of(context).size.width,
+    //             height: smallRingRadiusSize,
+    //             child: Row(
+    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                 crossAxisAlignment: CrossAxisAlignment.center,
+    //                 children: _items)),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

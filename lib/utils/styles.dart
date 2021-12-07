@@ -9,7 +9,7 @@ final lightTheme = ThemeData(
     backgroundColor: color_card_answear_bcg,
     canvasColor: color_card_history_bcg,
     focusColor: color_card_history_inner_bcg,
-    // unselectedWidgetColor: kMainDarkBcgColor,
+    unselectedWidgetColor: Colors.grey.shade600,
     primaryColor: Colors.green.shade400,
     primaryColorLight: Colors.red.shade400,
     primaryColorDark: color_card_random_bcg,
@@ -24,9 +24,7 @@ final lightTheme = ThemeData(
     textTheme: TextTheme(
       headline2: GoogleFonts.rubik(
           textStyle: const TextStyle(
-        color: color_card_history_bcg,
-        fontSize: 18,
-      )),
+              color: color_card_history_bcg, fontSize: 18, height: 1.5)),
 
       ///title card
       headline1: GoogleFonts.rubik(
@@ -70,6 +68,17 @@ final lightTheme = ThemeData(
               fontSize: 10,
               fontWeight: FontWeight.w200,
               height: 2)),
+    ),
+    cardTheme: const CardTheme(
+      shadowColor: Colors.black38,
+      elevation: 3,
+      color: color_card_history_bcg,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(10),
+        topRight: Radius.circular(10),
+        bottomRight: Radius.circular(10),
+      )),
     )
     //
     //   /// list title

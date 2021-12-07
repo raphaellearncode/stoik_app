@@ -7,6 +7,8 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Card(
         //   margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
@@ -42,7 +44,39 @@ class Logo extends StatelessWidget {
           style: GoogleFonts.rubik(
               fontSize: 18, color: Colors.black, fontWeight: FontWeight.w500),
         ),
+        Text(
+          'versja 1.0.0',
+          style: GoogleFonts.rubik(
+              fontSize: 12, color: Colors.black, fontWeight: FontWeight.w200),
+        ),
       ],
+    );
+  }
+}
+
+class SmallLogo extends StatelessWidget {
+  const SmallLogo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 45,
+      height: 45,
+      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(22)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Theme.of(context).shadowColor,
+                offset: const Offset(
+                  .5,
+                  .5,
+                ),
+                blurRadius: 1.0)
+          ]),
+      child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(21)),
+          child: Image.asset('assets/images/logo.png')),
     );
   }
 }

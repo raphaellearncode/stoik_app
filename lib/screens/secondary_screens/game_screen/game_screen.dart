@@ -22,7 +22,7 @@ class _GameScreenState extends State<GameScreen> {
   //todo remove when card set (is > 0)
   final List<SocialModel> _gameMenu = [
     SocialModel(title: "Zakończ", icon: FontAwesomeIcons.powerOff, link: ''),
-    SocialModel(title: "Przetasuj", icon: Icons.refresh, link: ''),
+    //SocialModel(title: "Przetasuj", icon: Icons.refresh, link: ''),
   ];
   var isBtnVisible = true;
 
@@ -68,12 +68,15 @@ class _GameScreenState extends State<GameScreen> {
                       width: MediaQuery.of(context).size.width,
                     ),
                   ),
-                  Text(
-                    'LOSUJ KARTĘ',
-                    style: GoogleFonts.rubik(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: sidePadding),
+                    child: Text(
+                      'LOSUJ KARTĘ',
+                      style: GoogleFonts.rubik(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sidePadding),
@@ -81,13 +84,66 @@ class _GameScreenState extends State<GameScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Rozdanie: ${gameProvider.gameSet} / ${settingsProvider.cardSets}',
-                          style: GoogleFonts.rubik(
-                              fontSize: 12,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
+                        Container(
+                          height: 60,
+                          width: 1.5,
+                          margin: const EdgeInsets.only(right: 5.0),
+                          color: Theme.of(context).backgroundColor,
                         ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rozdanie: ${gameProvider.gameSet} / ${settingsProvider.cardSets}',
+                              style: GoogleFonts.rubik(
+                                  fontSize: 12,
+                                  height: 1.5,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            RichText(
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              text: TextSpan(
+                                  text: 'Punkty satysfakcji: ',
+                                  style: GoogleFonts.rubik(
+                                      fontSize: 12,
+                                      height: 1.5,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' ${gameProvider.scoresPositive}',
+                                      style: GoogleFonts.rubik(
+                                          fontSize: 12,
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.w700),
+                                    )
+                                  ]),
+                            ),
+                            RichText(
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              text: TextSpan(
+                                  text: 'Punkty frustracji: ',
+                                  style: GoogleFonts.rubik(
+                                      fontSize: 12,
+                                      height: 1.5,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' ${gameProvider.scoresNegative}',
+                                      style: GoogleFonts.rubik(
+                                          fontSize: 12,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w700),
+                                    )
+                                  ]),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -159,6 +215,9 @@ class _GameScreenState extends State<GameScreen> {
                     padding: EdgeInsets.symmetric(
                         horizontal: sidePadding, vertical: 30),
                     child: RowBuilder(
+                      mainAxisAlignment: gameProvider.gameSet > 0
+                          ? MainAxisAlignment.center
+                          : MainAxisAlignment.spaceEvenly,
                       itemCount: gameMenuCounter,
                       itemBuilder: (context, index) {
                         final menu = _gameMenu[index];

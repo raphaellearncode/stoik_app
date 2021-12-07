@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stoik_app/providers/game_provider/game_provider.dart';
 import 'package:stoik_app/providers/home_provider/home_provider.dart';
 import 'package:stoik_app/screens/secondary_screens/game_screen/game_rules_page.dart';
 import 'package:stoik_app/screens/secondary_screens/game_screen/game_screen.dart';
+import 'package:stoik_app/screens/secondary_screens/in_progress_screen/in_progress_screen.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
 import 'package:provider/provider.dart';
 import 'package:stoik_app/widgets/cards/education_card.dart';
@@ -15,38 +17,23 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(
-      builder: (context, providerData, child) {
-        final daySentence = providerData.sentence;
+    return Consumer2<HomeProvider, GameProvider>(
+      builder: (context, providerData, gameProvider, child) {
+        // final daySentence = providerData.sentence;
 
         return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               height: 30,
             ),
-            PlayAnimation<double>(
-              tween: Tween<double>(begin: 0.7, end: 1.0),
-              duration: const Duration(milliseconds: 300),
-              delay: const Duration(milliseconds: 200),
-              curve: Curves.easeIn,
-              builder: (context, child, value) {
-                return Transform.scale(
-                  scale: value,
-                  child: SentenceCard(
-                    imgAssets: daySentence.assetPath,
-                    description: daySentence.description,
-                    author: daySentence.title,
-                  ),
-                );
-              },
-              // child:
-            ),
-            SizedBox(
-              height: 20,
-            ),
+            Expanded(flex: 1, child: SentenceCard()),
+            // SizedBox(
+            //   height: 20,
+            // ),
             Expanded(
+              flex: 1,
               child: AnimationLimiter(
                 child: GridView.count(
                   padding: const EdgeInsets.all(5.0),
@@ -81,6 +68,7 @@ class HomeScreen extends StatelessWidget {
                                         direction: AxisDirection.up));
                                 break;
                               case 1:
+                                gameProvider.resetGame();
                                 await Navigator.push(
                                     context,
                                     CustomPageRoute(
@@ -91,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                                 await Navigator.push(
                                     context,
                                     CustomPageRoute(
-                                        child: GameScreen(),
+                                        child: InProgress(),
                                         direction: AxisDirection.up));
                                 break;
                               case 3:

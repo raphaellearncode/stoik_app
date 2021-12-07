@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stoik_app/utils/prefs/prefs.dart';
+
+import 'card_set_option.dart';
+import 'dice_options.dart';
 
 class SettingsProvider extends ChangeNotifier {
   SettingsProvider() {
@@ -7,11 +11,17 @@ class SettingsProvider extends ChangeNotifier {
 
   init() async {
     print('LOAD SETTINGS PROVIDER');
+    getDiceShuffleTime();
+    getGameRounds();
   }
 
-  int diceShuffleDuration = 2;
+  final Prefs _prefs = Prefs();
+
+  int diceShuffleDuration = 3;
+  int setShuffleOption = 0;
 
   int cardSets = 5;
+  int setGameSetOption = 1;
   //TODO: mailchimp url
 
   //todo: theme data
@@ -22,8 +32,37 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   //todo: settings dice shuffle seconds
+  DiceShuffleOptions diceOptions = DiceShuffleOptions();
 
-  void diceShuffleTime() {
+  void setDiceShuffleTime(int index) {
+    setShuffleOption = index;
+    _prefs
+        .storeInt('diceShuffleKey', setShuffleOption)
+        .then((value) => getDiceShuffleTime());
+
+    notifyListeners();
+  }
+
+  void getDiceShuffleTime() async {
+    setShuffleOption =
+        await _prefs.restoreInt('diceShuffleKey', setShuffleOption);
+    switch (setShuffleOption) {
+      case 0:
+        diceShuffleDuration = 3;
+        break;
+      case 1:
+        diceShuffleDuration = 5;
+        break;
+      case 2:
+        diceShuffleDuration = 7;
+        break;
+      case 3:
+        diceShuffleDuration = 10;
+        break;
+
+      default:
+        diceShuffleDuration = 3;
+    }
     notifyListeners();
   }
 
@@ -32,6 +71,34 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  CardSetOptions gameRounds = CardSetOptions();
   //todo how many game rounds
-  void gameRounds() {}
+  void setGameRounds(int index) {
+    setGameSetOption = index;
+    _prefs
+        .storeInt('gamSetKey', setGameSetOption)
+        .then((value) => getGameRounds());
+    notifyListeners();
+  }
+
+  void getGameRounds() async {
+    setGameSetOption = await _prefs.restoreInt('gamSetKey', setGameSetOption);
+    switch (setGameSetOption) {
+      case 0:
+        cardSets = 3;
+        break;
+      case 1:
+        cardSets = 5;
+        break;
+      case 2:
+        cardSets = 10;
+        break;
+      case 3:
+        cardSets = 15;
+        break;
+
+      default:
+        cardSets = 5;
+    }
+  }
 }
