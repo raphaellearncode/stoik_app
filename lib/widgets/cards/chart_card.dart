@@ -12,23 +12,26 @@ class BarChart extends StatelessWidget {
   final MaterialAccentColor colorPosBar;
   final MaterialAccentColor colorNegBar;
 
-  BarChart(
-      {required this.chartData,
+  const BarChart(
+      {Key? key,
+      required this.chartData,
       this.fontSize = 7,
       this.colorPosBar = Colors.greenAccent,
-      this.colorNegBar = Colors.redAccent});
+      this.colorNegBar = Colors.redAccent})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var series = [
-      new charts.Series(
+      charts.Series(
         measureOffsetFn: (_, __) => 2,
         strokeWidthPxFn: (_, __) => 1,
         overlaySeries: false,
         colorFn: (_, __) => getChartColor(colorPosBar[400]!),
         fillColorFn: (_, __) => getChartColor(colorPosBar[200]!),
         domainFn: (Game data, _) => DateFormat('d MMM yy \n h:m:s').format(
-            data.date), //DateTime.fromMicrosecondsSinceEpoch(data.date.toInt())
+            DateTime.fromMicrosecondsSinceEpoch(data.date!
+                .toInt())), //DateTime.fromMicrosecondsSinceEpoch(data.date.toInt())
         measureFn: (Game data, _) => data.scoresPositive,
 
         insideLabelStyleAccessorFn: (Game data, _) {
@@ -41,14 +44,15 @@ class BarChart extends StatelessWidget {
         id: 'data',
         data: chartData.isEmpty ? fakeChartData : chartData,
       ),
-      new charts.Series(
+      charts.Series(
         measureOffsetFn: (_, __) => 2,
         strokeWidthPxFn: (_, __) => 1,
         overlaySeries: false,
         colorFn: (_, __) => getChartColor(colorNegBar[400]!),
         fillColorFn: (_, __) => getChartColor(colorNegBar[200]!),
         domainFn: (Game data, _) => DateFormat('d MMM yy \n h:m:s').format(
-            data.date), //DateTime.fromMicrosecondsSinceEpoch(data.date.toInt())
+            DateTime.fromMicrosecondsSinceEpoch(data.date!
+                .toInt())), //DateTime.fromMicrosecondsSinceEpoch(data.date.toInt())
         measureFn: (Game data, _) => data.scoresNegative,
 
         insideLabelStyleAccessorFn: (Game data, _) {
@@ -66,6 +70,7 @@ class BarChart extends StatelessWidget {
     var barChart = charts.BarChart(
       series,
       animate: true,
+
       barGroupingType: charts.BarGroupingType.grouped,
       layoutConfig: charts.LayoutConfig(
         leftMarginSpec: charts.MarginSpec.fixedPixel(0),
@@ -90,40 +95,43 @@ class BarChart extends StatelessWidget {
       //OS Y
       primaryMeasureAxis: charts.NumericAxisSpec(
         showAxisLine: false, //show y axis line
-        tickProviderSpec: charts.BasicNumericTickProviderSpec(
+
+        tickProviderSpec: const charts.BasicNumericTickProviderSpec(
             zeroBound: true), //setting bounds for charts they don't overlapping
         renderSpec: charts.GridlineRendererSpec(
-          lineStyle: new charts.LineStyleSpec(
+          lineStyle: charts.LineStyleSpec(
             color: getChartColor(Colors.black),
-            dashPattern: [4, 4],
+            dashPattern: const [4, 4],
           ),
         ),
       ),
+
       secondaryMeasureAxis: charts.NumericAxisSpec(
         showAxisLine: false, //show y axis line
-        tickProviderSpec: charts.BasicNumericTickProviderSpec(
+        tickProviderSpec: const charts.BasicNumericTickProviderSpec(
             zeroBound: true), //setting bounds for charts they don't overlapping
         renderSpec: charts.GridlineRendererSpec(
-          lineStyle: new charts.LineStyleSpec(
+          lineStyle: charts.LineStyleSpec(
             color: getChartColor(Colors.black),
-            dashPattern: [4, 4],
+            dashPattern: const [4, 4],
           ),
         ),
       ),
 
       //OS X
-      domainAxis: new charts.OrdinalAxisSpec(
+      domainAxis: charts.OrdinalAxisSpec(
         showAxisLine: false, //show x axis line
-        viewport: new charts.OrdinalViewport(' ', 5),
+        viewport: charts.OrdinalViewport(' ', 5),
+
         renderSpec: charts.SmallTickRendererSpec(
             tickLengthPx: 2,
             labelAnchor: charts.TickLabelAnchor.centered,
             labelJustification: charts.TickLabelJustification.inside,
             minimumPaddingBetweenLabelsPx: 3,
-            lineStyle: new charts.LineStyleSpec(
+            lineStyle: charts.LineStyleSpec(
               thickness: 1,
               color: getChartColor(colorPosBar),
-              dashPattern: [4, 4], //linia przerywana
+              dashPattern: const [4, 4], //linia przerywana
             ),
             // Tick and Label styling here.
             labelStyle: charts.TextStyleSpec(
@@ -135,8 +143,8 @@ class BarChart extends StatelessWidget {
     return ClipRect(
       child: Container(
         height: 220,
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,

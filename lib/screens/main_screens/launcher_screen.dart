@@ -5,6 +5,8 @@ import 'package:stoik_app/providers/onboarding_provider/onboarding_provider.dart
 import 'package:stoik_app/screens/onboarding_screens/welcome_page.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
 import 'package:after_layout/after_layout.dart';
+import 'package:stoik_app/utils/dimensions/dimens.dart';
+import 'package:stoik_app/utils/dimensions/screen_type.dart';
 import 'package:stoik_app/widgets/cards/logo_card.dart';
 
 class LaunchScreen extends StatefulWidget {
@@ -59,6 +61,14 @@ class _LaunchScreenState extends State<LaunchScreen>
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    var sizeInfo = Dimens(
+        screenType: getScreenType(mediaQuery), screenSize: mediaQuery.size);
+    var titleSize = sizeInfo.headerTitleSize;
+    var socialSubtitleFontSize = sizeInfo.headerSubtitleSize;
+    var logoCardSize = sizeInfo.logoCardSize;
+    var logoCardMargin = sizeInfo.logoCardMargin;
+    var cardBorderRadius = sizeInfo.cardBorderRadius;
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: ChangeNotifierProvider.value(
@@ -67,7 +77,15 @@ class _LaunchScreenState extends State<LaunchScreen>
               key: widget.key,
               child: Center(
                 child: ScaleTransition(
-                    scale: _scaleAnimation, child: const Logo()),
+                  scale: _scaleAnimation,
+                  child: Logo(
+                    cardBorderRadius: cardBorderRadius,
+                    logoCardMargin: logoCardMargin,
+                    logoCardSize: logoCardSize,
+                    logoTitleSize: titleSize,
+                    logoSubtitleSize: socialSubtitleFontSize,
+                  ),
+                ),
               )),
         ));
   }

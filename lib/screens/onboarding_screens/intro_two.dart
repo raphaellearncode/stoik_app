@@ -74,11 +74,8 @@ class IntroB extends StatelessWidget {
                                   text: '${menuIntro.description} \n',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle1!
-                                      .copyWith(
-                                          height: 1.2,
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 12),
+                                      .headline5!
+                                      .copyWith(height: 1.2, fontSize: 12),
                                 )
                               ]),
                         ),

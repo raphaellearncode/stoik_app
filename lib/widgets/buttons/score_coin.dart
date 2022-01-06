@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ScoreCoin extends StatelessWidget {
-  const ScoreCoin({Key? key, this.isPositive = true}) : super(key: key);
+  const ScoreCoin({Key? key, this.isPositive = true, required this.coinSize})
+      : super(key: key);
 
   final bool isPositive;
+  final double coinSize;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 30,
-      height: 30,
+      width: coinSize,
+      height: coinSize,
       padding: const EdgeInsets.all(3.0),
       decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: BorderRadius.all(Radius.circular(coinSize / 2)),
           color: isPositive
               ? Theme.of(context).primaryColor
               : Theme.of(context).primaryColorLight,
@@ -23,23 +25,12 @@ class ScoreCoin extends StatelessWidget {
                 blurRadius: 2.5)
           ]),
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        borderRadius: BorderRadius.all(Radius.circular(coinSize / 2)),
         child: Image.asset(
           'assets/images/coins_${isPositive ? 'positive' : 'negative'}.png',
           fit: BoxFit.cover,
         ),
       ),
     );
-
-    // CircleAvatar(
-    //   radius: 15,
-    //   backgroundColor: isPositive
-    //       ? Theme.of(context).primaryColor
-    //       : Theme.of(context).primaryColorLight,
-    //   child: Image.asset(
-    //     'assets/images/coins_${isPositive ? 'positive' : 'negative'}.png',
-    //     fit: BoxFit.cover,
-    //   ),
-    // );
   }
 }

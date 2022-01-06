@@ -8,13 +8,13 @@ class GameDb {
 
   final DatabaseHelper dbGame = DatabaseHelper.databaseHelper;
 
-  Future<List<Map<String, dynamic>>> getTaskMapList() async {
+  Future<List<Map<String, dynamic>>> getGameMapList() async {
     Database db = await dbGame.database;
     var result = await db.rawQuery('''SELECT * FROM ${dbGame.gameTable}''');
     return result;
   }
 
-  Future<int> insertTask(Game game) async {
+  Future<int> insertGame(Game game) async {
     Database db = await dbGame.database;
     var result = await db.insert(dbGame.gameTable, game.toMap());
     return result;

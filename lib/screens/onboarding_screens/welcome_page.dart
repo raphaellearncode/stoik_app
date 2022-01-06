@@ -46,9 +46,6 @@ class _IntroScreenState extends State<IntroScreen> {
 
   void nextPage() {
     setState(() {
-      // _pageController.nextPage(
-      //     duration: const Duration(microseconds: 500), curve: Curves.easeIn);
-      // _currentPage = _pageController.page!.toInt();
       _pageController.animateToPage(_currentPage.value + 1,
           duration: Duration(milliseconds: 500), curve: Curves.easeIn);
     });
@@ -56,9 +53,6 @@ class _IntroScreenState extends State<IntroScreen> {
 
   void prevPage() {
     setState(() {
-      // _pageController.previousPage(
-      //     duration: const Duration(microseconds: 500), curve: Curves.easeIn);
-      // _currentPage = _pageController.page!.toInt();
       _pageController.animateToPage(_currentPage.value - 1,
           duration: Duration(milliseconds: 500), curve: Curves.easeIn);
     });
@@ -72,7 +66,6 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -99,51 +92,58 @@ class _IntroScreenState extends State<IntroScreen> {
                         .elementAt(index);
                   }),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Opacity(
-                  opacity: _currentPage.value <= 0 ? 0 : 1,
-                  child: FlatBtn(
-                    title: '<',
-                    color: Colors.transparent,
-                    elevation: 0,
-                    textColor: Colors.black,
-                    onPress: () {
-                      prevPage();
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Indicators(
-                    itemCount: _onBoardingListCounter,
-                    currentPageNotifier: _currentPage,
-                    dotSize: 10,
-                  ),
-                ),
-                FlatBtn(
-                  title: '>',
-                  color: Colors.transparent,
-                  elevation: 0,
-                  textColor: Colors.black,
-                  onPress: () async {
-                    nextPage();
-                    if (_currentPage.value == 4) {
-                      provider.storeIntro(true);
-                      await Navigator.of(context)
-                          .pushReplacement(MaterialPageRoute(
-                              builder: (context) => const HomePage(
-                                    title: "Stolik",
-                                  )));
-                    }
-                  },
-                ),
-              ],
-            )
           ],
         );
       }),
+      bottomNavigationBar: BottomAppBar(
+        elevation: 3.0,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child:
+            Consumer<OnBoardingProvider>(builder: (context, provider, child) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Opacity(
+                opacity: _currentPage.value <= 0 ? 0 : 1,
+                child: FlatBtn(
+                  title: '<',
+                  color: Colors.transparent,
+                  elevation: 0,
+                  textColor: Colors.black,
+                  onPress: () {
+                    prevPage();
+                  },
+                ),
+              ),
+              Expanded(
+                child: Indicators(
+                  itemCount: _onBoardingListCounter,
+                  currentPageNotifier: _currentPage,
+                  dotSize: 10,
+                ),
+              ),
+              FlatBtn(
+                title: '>',
+                color: Colors.transparent,
+                elevation: 0,
+                textColor: Colors.black,
+                onPress: () async {
+                  nextPage();
+                  if (_currentPage.value == 4) {
+                    provider.storeIntro(true);
+                    await Navigator.of(context)
+                        .pushReplacement(MaterialPageRoute(
+                            builder: (context) => const HomePage(
+                                  title: "Stolik",
+                                )));
+                  }
+                },
+              ),
+            ],
+          );
+        }),
+      ),
     );
   }
 }

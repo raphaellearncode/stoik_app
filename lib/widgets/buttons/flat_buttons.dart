@@ -8,7 +8,8 @@ class FlatBtn extends StatelessWidget {
       required this.onPress,
       this.color = Colors.amber,
       this.elevation = 3,
-      this.textColor = Colors.white})
+      this.textColor = Colors.white,
+      this.fontSize = 15})
       : super(key: key);
 
   final String title;
@@ -16,6 +17,7 @@ class FlatBtn extends StatelessWidget {
   final Color color;
   final double elevation;
   final Color textColor;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class FlatBtn extends StatelessWidget {
       child: Text(
         title,
         style: GoogleFonts.rubik(
-            fontSize: 15, color: textColor, fontWeight: FontWeight.w500),
+            fontSize: fontSize, color: textColor, fontWeight: FontWeight.w500),
       ),
     );
   }

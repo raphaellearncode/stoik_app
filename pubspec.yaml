@@ -5,7 +5,7 @@ description: stoik app is all about self controll in stressfoul situations
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.1.0+5
 
 environment:
   sdk: ">=2.15.0-226.0.dev <3.0.0"
@@ -34,8 +34,8 @@ dependencies:
   intl: ^0.17.0 #import 'package:intl/intl.dart'
   page_view_indicators: ^2.0.0
   after_layout: ^1.1.0
-  fl_chart: ^0.40.5
   charts_flutter: ^0.12.0 #import 'package:charts_flutter/flutter.dart';
+  rate_my_app: ^1.1.1+1
 
 dev_dependencies:
   flutter_test:

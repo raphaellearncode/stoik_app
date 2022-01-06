@@ -9,8 +9,8 @@ class SocialList {
         icon: FontAwesomeIcons.globe,
         link: 'https://stoikapp.herokuapp.com/'),
     SocialModel(
-        title: "facebook",
-        icon: FontAwesomeIcons.facebook,
+        title: "dodaj opinie",
+        icon: FontAwesomeIcons.googlePlay,
         link: 'https://www.facebook.com'),
     SocialModel(title: "udostępnij", icon: FontAwesomeIcons.share, link: ''),
   ];

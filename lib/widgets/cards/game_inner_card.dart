@@ -35,10 +35,10 @@ class GameInnerCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 45,
-                height: 45,
+                // width: 45,
+                // height: 45,
                 margin: EdgeInsets.only(bottom: 15),
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
                 color: Theme.of(context).canvasColor,
                 child: Text(
                   '$historyNumber',
@@ -68,7 +68,7 @@ class GameInnerCard extends StatelessWidget {
               scrollDirection: Axis.vertical,
               child: Text(
                 '''${description}''',
-                style: Theme.of(context).textTheme.headline2!.copyWith(
+                style: Theme.of(context).textTheme.headline5!.copyWith(
                     fontSize: 12, color: Theme.of(context).canvasColor),
               ),
             ),

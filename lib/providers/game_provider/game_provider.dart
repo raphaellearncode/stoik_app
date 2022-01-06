@@ -32,9 +32,11 @@ class GameProvider extends ChangeNotifier {
 
   late Timer timer;
 
-  final List<Game> _gameList = [];
+  List<Game> _gameList = [];
 
-  init() async {}
+  init() async {
+    getAllGames();
+  }
 
   @override
   void dispose() {
@@ -42,7 +44,7 @@ class GameProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  final List<HistoryModel> _historyList = historyDataList;
+  List<HistoryModel> _historyList = historyDataList;
 
   UnmodifiableListView<HistoryModel> get historyList {
     return UnmodifiableListView(_historyList);
@@ -52,7 +54,22 @@ class GameProvider extends ChangeNotifier {
     return _historyList.length;
   }
 
-  void shuffleDice() {
+  void removeSelectedHistoryCard(int index) {
+    _historyList = List.from(_historyList)..removeAt(index);
+
+    notifyListeners();
+  }
+
+  void getAllHistories() {
+    _historyList = historyDataList;
+    notifyListeners();
+  }
+
+  void shuffleDice(int shuffleTime) {
+    // Future.delayed(Duration(seconds: shuffleTime), () {
+    //   stopDice();
+    //   // swapPages();
+    // });
     timer = Timer.periodic(const Duration(milliseconds: 400), (timer) {
       diceNumber = Random().nextInt(6) + 1;
       if (diceNumber % 2 == 1) {
@@ -62,8 +79,6 @@ class GameProvider extends ChangeNotifier {
         isDicePair = true;
         choices = 2;
       }
-      //todo : remove prints
-      print('RESZTA z Kostki $isDicePair');
       notifyListeners();
     });
 
@@ -72,6 +87,7 @@ class GameProvider extends ChangeNotifier {
 
   void stopDice() {
     timer.cancel();
+
     notifyListeners();
   }
 
@@ -80,7 +96,6 @@ class GameProvider extends ChangeNotifier {
     if (gameSet == set) {
       isGameFinished = true;
       addGameResult();
-      // resetGame();
     } else {
       isGameFinished = false;
     }
@@ -98,7 +113,6 @@ class GameProvider extends ChangeNotifier {
     choiceCounter++;
     if (choiceCounter == choices) {
       showBonusAnswers = true;
-      //todo take of one score
       if (scoresPositive > 0) {
         scoresPositive -= 1;
       }
@@ -113,17 +127,11 @@ class GameProvider extends ChangeNotifier {
   }
 
   void resetGame() {
-    //todo first add game result to database => than reset scores
-    print('RSET GAME: SCORE POS: $scoresPositive SCORE NEG: $scoresNegative');
+    getAllHistories();
     gameSet = 0;
     scoresPositive = 0;
     scoresNegative = 0;
 
-    notifyListeners();
-  }
-
-  //todo: refresh history list (shuffle)
-  void refreshCardStock() {
     notifyListeners();
   }
 
@@ -132,23 +140,67 @@ class GameProvider extends ChangeNotifier {
   }
 
   void addGameResult() async {
+    double currentDate = DateTime.now().microsecondsSinceEpoch.toDouble();
     Game game = Game(
-        // id: game.id,
         scoresPositive: scoresPositive,
         scoresNegative: scoresNegative,
-        date: DateTime.now());
-    await _gameDb.insertTask(game).then((value) {
-      _gameDb.getAllGames().then((value) {
-        notifyListeners();
-      });
+        date: currentDate);
+
+    await _gameDb.insertGame(game).then((value) {
+      //_gameDb.getAllGames();
+      getLastScores();
+      notifyListeners();
     });
-    int id = 1;
-    if (game.id != null) {
-      game.id = id++;
-    } else {
-      game.id = id;
+
+    notifyListeners();
+  }
+
+  int allPositiveScores = 0;
+  int allNegativeScores = 0;
+
+  Future<List<Game>> getAllGames() async {
+    resetGame();
+
+    await _gameDb.getAllGames().then((games) {
+      _gameList = games
+          .where((item) =>
+              (item.scoresPositive != null || item.scoresNegative != null))
+          .toList();
+      getAllScores(_gameList);
+      notifyListeners();
+      return _gameList;
+    });
+    notifyListeners();
+    return _gameList;
+  }
+
+  UnmodifiableListView<Game> get gameList {
+    return UnmodifiableListView(_gameList);
+  }
+
+  int get gameListCounter {
+    return _gameList.length;
+  }
+
+  getLastScores() async {
+    _gameList = await _gameDb.getAllGames();
+    allPositiveScores += _gameList.last.scoresPositive!;
+    allNegativeScores += _gameList.last.scoresNegative!;
+    notifyListeners();
+  }
+
+  getAllScores(List<Game> games) {
+    for (var game in games) {
+      allPositiveScores += game.scoresPositive!;
+      allNegativeScores += game.scoresNegative!;
+
+      notifyListeners();
     }
-    print('RSULT INSERTD TO DB: ${game.id}');
+    notifyListeners();
+  }
+
+  markSelectedCard(AnswerModel answer) {
+    answer.isCardSelected();
     notifyListeners();
   }
 }

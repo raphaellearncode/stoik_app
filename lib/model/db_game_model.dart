@@ -2,7 +2,7 @@ class Game {
   int? id;
   int? scoresPositive;
   int? scoresNegative;
-  late DateTime date;
+  double? date;
 
   Game(
       {this.id,
@@ -14,7 +14,7 @@ class Game {
     var map = <String, dynamic>{
       'scores_positive': scoresPositive,
       'scores_negative': scoresNegative,
-      'game_date': date.toIso8601String()
+      'game_date': date
     };
     if (id != null) {
       map['game_id'] = id;
@@ -23,9 +23,9 @@ class Game {
   }
 
   Game.fromMap(dynamic map) {
-    id = map['task_id'] as int?;
+    id = map['game_id'] as int?;
     scoresPositive = map['scores_positive'] as int?;
     scoresNegative = map['scores_negative'] as int?;
-    date = DateTime.parse(map['game_date']);
+    date = map['game_date'] as double?;
   }
 }

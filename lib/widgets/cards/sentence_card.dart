@@ -1,20 +1,15 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_animations/simple_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:stoik_app/model/learning_model.dart';
 import 'package:stoik_app/providers/home_provider/home_provider.dart';
+import 'package:stoik_app/utils/dimensions/dimens.dart';
+import 'package:stoik_app/utils/dimensions/screen_type.dart';
 
 class SentenceCard extends StatefulWidget {
   const SentenceCard({
     Key? key,
-    // required this.description,
-    // required this.imgAssets,
-    // required this.author
   }) : super(key: key);
 
   @override
@@ -32,7 +27,7 @@ class _SentenceCardState extends State<SentenceCard>
 
   final List<LearnModel> sentenceList = [
     LearnModel(
-        'Marek Aurliusz',
+        'Marek Aureliusz',
         '''``Wypadki zewnetrzne duszy nie dotykają, lecz stoją spokojnie poza nią, a wszelki niepokój jest jedynie skutkiem wewnętrznego sądu.`` ''',
         'assets/images/meditation.png'),
     LearnModel(
@@ -43,6 +38,10 @@ class _SentenceCardState extends State<SentenceCard>
         'Epiktet',
         '''``Kiedy jesteś sam, powinieneś nazwać ten stan spokojem i wolnością i myśleć o sobie, jakbyś był bogiem, a gdy jesteś wśród wielu, nie powinieneś nazywać tego stanu tłumem, trudem, podrażnieniem, lecz festynem i zgromadzeniem, i przez to zaakceptować go całkowicie.`` ''',
         'assets/images/online_game.png'),
+    LearnModel(
+        'Jan Kochanowski',
+        '''``Nie porzucaj nadzieje, Jakoć się kolwiek dzieje`` ''',
+        'assets/images/love.png'),
   ];
 
   int get sentenceListCounter {
@@ -56,13 +55,6 @@ class _SentenceCardState extends State<SentenceCard>
       sentence = sentenceList[randomSentenceIndex];
     });
 
-    // timer = Timer.periodic(Duration(seconds: sentenceDurations), (timer) {
-    //   randomSentenceIndex = Random().nextInt(sentenceList.length);
-    //   sentence = sentenceList[randomSentenceIndex];
-    //   //todo remove prints
-    //   // print('sntnc of a day is: ${sentence.description}');
-    //   notifyListeners();
-    // });
     return sentence;
   }
 
@@ -114,73 +106,46 @@ class _SentenceCardState extends State<SentenceCard>
   // final String imgAssets;
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(
-      builder: (context, homeProvider, child) {
-        // final daySentence = homeProvider.sentence;
-        return ScaleTransition(
-          scale: _scaleIn,
-          child: FadeTransition(
-            opacity: _fadeIn,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12.0, left: 7.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+    var mediaQuery = MediaQuery.of(context);
+    var sizeInfo = Dimens(
+        screenType: getScreenType(mediaQuery), screenSize: mediaQuery.size);
+
+    var sidePadding = sizeInfo.sideSpacingOnly;
+    var sentenceSize = sizeInfo.headerSubtitleSize;
+    return ScaleTransition(
+      scale: _scaleIn,
+      child: FadeTransition(
+        opacity: _fadeIn,
+        child: Padding(
+          padding: sidePadding,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                sentence.assetPath,
+                width: MediaQuery.of(context).size.width * 0.5,
+              ),
+              Text(sentence.description,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: sentenceSize)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    sentence.assetPath,
-                    width: MediaQuery.of(context).size.width * 0.5,
-                  ),
-                  Text(sentence.description,
-                      style: Theme.of(context).textTheme.bodyText1),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(sentence.title,
-                          style: Theme.of(context).textTheme.subtitle1),
-                    ],
-                  )
+                  Text(sentence.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(fontSize: sentenceSize)),
                 ],
-              ),
-            ),
+              )
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
-
-    // PlayAnimation<double>(
-    //   tween: Tween<double>(begin: 0.7, end: 1.0),
-    //   duration: const Duration(milliseconds: 300),
-    //   delay: const Duration(milliseconds: 200),
-    //   curve: Curves.easeIn,
-    //   builder: (context, child, value) {
-    //     return Transform.scale(
-    //       scale: value,
-    //       child: Padding(
-    //         padding: const EdgeInsets.only(right: 12.0, left: 7.0),
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.start,
-    //           crossAxisAlignment: CrossAxisAlignment.center,
-    //           children: [
-    //             Image.asset(
-    //               imgAssets,
-    //               width: MediaQuery.of(context).size.width * 0.5,
-    //             ),
-    //             Text(description,
-    //                 style: Theme.of(context).textTheme.bodyText1),
-    //             Row(
-    //               mainAxisAlignment: MainAxisAlignment.end,
-    //               crossAxisAlignment: CrossAxisAlignment.center,
-    //               children: [
-    //                 Text(author,
-    //                     style: Theme.of(context).textTheme.subtitle1),
-    //               ],
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     );
-    //   });
   }
 }

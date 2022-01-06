@@ -8,6 +8,8 @@ import 'package:stoik_app/providers/export_providers.dart';
 import 'package:stoik_app/screens/secondary_screens/game_screen/game_screen.dart';
 import 'package:stoik_app/screens/secondary_screens/game_screen/summary_screen.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
+import 'package:stoik_app/utils/dimensions/dimens.dart';
+import 'package:stoik_app/utils/dimensions/screen_type.dart';
 import 'package:stoik_app/widgets/buttons/flat_buttons.dart';
 import 'package:stoik_app/widgets/cards/game_inner_card.dart';
 import 'package:stoik_app/widgets/cards/game_play_card.dart';
@@ -35,6 +37,16 @@ class AnswerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    var sizeInfo = Dimens(
+        screenType: getScreenType(mediaQuery), screenSize: mediaQuery.size);
+
+    double cardHeight = sizeInfo.gameCardHeight;
+    double headerFontSize = sizeInfo.largeHeaderSize;
+    double titleFontSize = sizeInfo.headerTitleSize;
+    double subTitleFontSize = sizeInfo.headerSubtitleSize;
+    double numSize = sizeInfo.cardNumberSize;
+    double ratio = sizeInfo.aspectRatioCard;
     return Consumer3<GameProvider, SettingsProvider, StatsProvider>(
       builder: (context, gameProvider, settingsProvider, statsProvider, child) {
         return Visibility(
@@ -42,7 +54,7 @@ class AnswerList extends StatelessWidget {
               ? gameProvider.showBonusAnswers
               : !gameProvider.showBonusAnswers,
           child: SizedBox(
-            height: 220,
+            height: cardHeight - 80,
             child: AnimationLimiter(
               child: GridView.count(
                 padding: const EdgeInsets.all(5.0),
@@ -82,7 +94,7 @@ class AnswerList extends StatelessWidget {
                                               .textTheme
                                               .headline1,
                                         ),
-                                        alignment: Alignment.bottomCenter,
+                                        alignment: Alignment.center,
                                         actionsAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         backgroundColor: Theme.of(context)
@@ -98,16 +110,13 @@ class AnswerList extends StatelessWidget {
                                         content:
                                             // child,
                                             SizedBox(
-                                          // width: 175,
-                                          height: 420,
+                                          width: cardHeight / 2,
+                                          height: cardHeight + 40,
                                           child: FlipCard(
                                             direction: FlipDirection.HORIZONTAL,
                                             speed: 500,
                                             controller: cardController,
-                                            onFlipDone: (status) {
-                                              //todo remove prints
-                                              print(status);
-                                            },
+                                            onFlipDone: (status) {},
                                             front: GamePlayCard(
                                               index: historyNumber,
                                               heroTag:
@@ -116,6 +125,9 @@ class AnswerList extends StatelessWidget {
                                               title: '',
                                               description: '',
                                               cardType: cardType,
+                                              cardVerticalText: titleFontSize,
+                                              cardNumberSize: numSize,
+                                              isCardUsed: answerList.isSelected,
                                             ),
                                             back: GameInnerCard(
                                               title: ' ',
@@ -128,73 +140,82 @@ class AnswerList extends StatelessWidget {
                                           ),
                                         ),
                                         actions: <Widget>[
-                                          Row(
-                                            mainAxisAlignment: cardType == 3
-                                                ? MainAxisAlignment.center
-                                                : MainAxisAlignment.spaceEvenly,
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              Visibility(
-                                                visible: cardType != 3
-                                                    ? true
-                                                    : false,
-                                                child: FlatBtn(
-                                                  title: 'Zmień kartę',
-                                                  onPress: () {
-                                                    gameProvider
-                                                        .cardChoiceCounter();
-                                                    toggleCard;
-                                                    Future.delayed(
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    200))
-                                                        .then((value) =>
-                                                            Navigator.pop(
-                                                                context));
-                                                  },
-                                                ),
+                                              Text(
+                                                '${gameProvider.choiceCounter == gameProvider.choices - 1 ? "Możesz zmienić kartę losową\nza (- 1 pkt.) satysfakcji." : " "}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline1!
+                                                    .copyWith(
+                                                      fontSize:
+                                                          subTitleFontSize,
+                                                    ),
                                               ),
-                                              FlatBtn(
-                                                title: 'Odpowiedz',
-                                                onPress: () async {
-                                                  gameProvider.gameSetCounter(
-                                                      settingsProvider
-                                                          .cardSets);
-                                                  gameProvider.scoreCounter(
-                                                      answerList.scoresPositive,
-                                                      answerList
-                                                          .scoresNegative);
+                                              Row(
+                                                mainAxisAlignment: cardType == 3
+                                                    ? MainAxisAlignment.center
+                                                    : MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Visibility(
+                                                    visible: cardType != 3
+                                                        ? true
+                                                        : false,
+                                                    child: FlatBtn(
+                                                      title: 'Zmień',
+                                                      onPress: () {
+                                                        gameProvider
+                                                            .cardChoiceCounter();
+                                                        gameProvider
+                                                            .markSelectedCard(
+                                                                answerList);
 
-                                                  // await Navigator.push(
-                                                  //     context,
-                                                  //     CustomPageRoute(
-                                                  //         child: gameProvider
-                                                  //                 .isGameFinished
-                                                  //             ? const SummaryPage()
-                                                  //             : const GameScreen(),
-                                                  //         direction:
-                                                  //             AxisDirection.up));
-                                                  gameProvider.isGameFinished
-                                                      ? () {
-                                                          gameProvider
-                                                              .resetGame();
-                                                          //todo: restart charts
-                                                          statsProvider.init();
-                                                        }
-                                                      : null;
-                                                  await Navigator.pushAndRemoveUntil(
-                                                      context,
-                                                      CustomPageRoute(
-                                                          child: gameProvider
-                                                                  .isGameFinished
-                                                              ? const SummaryPage()
-                                                              : const GameScreen(),
-                                                          direction:
-                                                              AxisDirection.up),
-                                                      (route) => false);
-                                                },
-                                              )
+                                                        toggleCard;
+                                                        Future.delayed(
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        200))
+                                                            .then((value) =>
+                                                                Navigator.pop(
+                                                                    context));
+                                                      },
+                                                    ),
+                                                  ),
+                                                  FlatBtn(
+                                                    title: 'Odpowiedz',
+                                                    onPress: () async {
+                                                      gameProvider
+                                                          .gameSetCounter(
+                                                              settingsProvider
+                                                                  .cardSets);
+                                                      gameProvider.scoreCounter(
+                                                          answerList
+                                                              .scoresPositive,
+                                                          answerList
+                                                              .scoresNegative);
+
+                                                      await Navigator.pushAndRemoveUntil(
+                                                          context,
+                                                          CustomPageRoute(
+                                                              child: gameProvider
+                                                                      .isGameFinished
+                                                                  ? const SummaryPage()
+                                                                  : const GameScreen(),
+                                                              direction:
+                                                                  AxisDirection
+                                                                      .up),
+                                                          (route) => false);
+                                                    },
+                                                  )
+                                                ],
+                                              ),
                                             ],
                                           ),
                                         ]),
@@ -209,12 +230,14 @@ class AnswerList extends StatelessWidget {
                         child: GamePlayCard(
                           shrink: true,
                           index: index,
-                          // isCardUsed: true,
+                          isCardUsed: answerList.isSelected,
                           heroTag: 'ANSWER_CARD${answerList.answerTag}',
                           historyNumber: historyNumber,
                           title: '',
                           description: answerList.answerDescription,
                           cardType: cardType,
+                          cardVerticalText: titleFontSize,
+                          cardNumberSize: numSize,
                         ),
                       );
                     })),

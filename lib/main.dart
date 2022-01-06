@@ -9,6 +9,8 @@ import 'package:stoik_app/widgets/cards/logo_card.dart';
 import 'model/nav_model.dart';
 import 'model/screen_model.dart';
 import 'package:stoik_app/providers/export_providers.dart';
+import 'utils/dimensions/dimens.dart';
+import 'utils/dimensions/screen_type.dart';
 import 'utils/styles.dart';
 
 void main() {
@@ -16,6 +18,7 @@ void main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -60,22 +63,11 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'StoLik',
               theme: lightTheme,
-              // ThemeData(
-              //   primarySwatch: Colors.blue,
-              // ), //settings.getTheme(),
               initialRoute: '/',
               onGenerateRoute: (route) => onGenerateRoute(route),
             );
           },
         ));
-
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
-    );
   }
 
   static onGenerateRoute(RouteSettings settings) {
@@ -176,6 +168,12 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    var sizeInfo = Dimens(
+        screenType: getScreenType(mediaQuery), screenSize: mediaQuery.size);
+    double menuIconSize = sizeInfo.menuIconsSize;
+    double logoRadius = sizeInfo.smallLogoDimen;
+    double leadingPadding = sizeInfo.smallLogoPadding;
     return Scaffold(
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -185,33 +183,13 @@ class _HomePageState extends State<HomePage>
           children: [
             Container(
               key: widget.key,
-              // margin: const EdgeInsets.only(
-              //     left: 5.0, top: 10.0, bottom: 10.0, right: 5.0),
-              // decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: const BorderRadius.all(Radius.circular(10)),
-              //     boxShadow: <BoxShadow>[
-              //       BoxShadow(
-              //           color: Theme.of(context).shadowColor,
-              //           offset: const Offset(0.5, 0.5),
-              //           blurRadius: 0.5)
-              //     ]),
               child: NavigationRail(
-                // minWidth: 35,
                 groupAlignment: -0.3,
-
-                leading: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: SmallLogo()
-                    // CircleAvatar(
-                    //   backgroundColor: Theme.of(context).indicatorColor,
-                    //   child: const Icon(
-                    //     Icons.person,
-                    //     size: 23,
-                    //     color: Colors.white,
-                    //   ),
-                    // )
-                    ),
+                leading: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: leadingPadding),
+                    child: SmallLogo(
+                      radius: logoRadius,
+                    )),
                 backgroundColor: Colors.transparent,
                 extended: isRailExtended,
                 labelType: NavigationRailLabelType.none,
@@ -224,7 +202,7 @@ class _HomePageState extends State<HomePage>
                     (index) => NavigationRailDestination(
                           icon: Icon(
                             _pages[index].pageTitle.icon,
-                            size: 18,
+                            size: menuIconSize,
                           ),
                           label: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -272,9 +250,6 @@ class _HomePageState extends State<HomePage>
           ],
         ),
       ),
-      // Stack(children: [
-      //
-      // ]),
     );
   }
 }

@@ -6,40 +6,54 @@ import 'package:stoik_app/providers/education_provider/education_provider.dart';
 import 'package:stoik_app/screens/secondary_screens/education_page/education_page.dart';
 import 'package:stoik_app/screens/secondary_screens/education_page/stoic_page.dart';
 import 'package:stoik_app/utils/custom_page_route.dart';
+import 'package:stoik_app/utils/dimensions/dimens.dart';
+import 'package:stoik_app/utils/dimensions/screen_type.dart';
 import 'package:stoik_app/widgets/cards/education_card.dart';
 import 'package:provider/provider.dart';
+import 'package:stoik_app/widgets/wrappers/screen_wrapper.dart';
 
 class EducationScreen extends StatelessWidget {
   const EducationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    var sizeInfo = Dimens(
+        screenType: getScreenType(mediaQuery), screenSize: mediaQuery.size);
+
+    int axisCount = sizeInfo.gridColumnCount;
+    double crossSpacing = sizeInfo.axisSpacing;
+    double headerFontSize = sizeInfo.largeHeaderSize;
+    double cardTitleFontSize = sizeInfo.headerSubtitleSize;
     return Consumer<EducationProvider>(
       builder: (context, providerData, child) {
-        return Container(
+        return PaddingWrap(
           key: key,
-          child: Column(
+          contentPage: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24,
+                ),
                 child: Text('Edukacja',
-                    style: Theme.of(context).textTheme.headline1),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1!
+                        .copyWith(fontSize: headerFontSize)),
               ),
               Expanded(
                 child: AnimationLimiter(
                   child: GridView.count(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
                     physics: const BouncingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics()),
                     scrollDirection: Axis.vertical,
-                    //isGrid == true ? Axis.vertical : Axis.horizontal,
-                    crossAxisSpacing: 5.0,
+                    crossAxisSpacing: crossSpacing,
                     shrinkWrap: true,
-                    mainAxisSpacing: 5.0,
-                    crossAxisCount: 2,
+                    mainAxisSpacing: crossSpacing,
+                    crossAxisCount: axisCount,
                     childAspectRatio: 1,
                     children: AnimationConfiguration.toStaggeredList(
                         duration: const Duration(milliseconds: 375),
@@ -53,6 +67,7 @@ class EducationScreen extends StatelessWidget {
                           return EducationCard(
                             title: list.title,
                             assetPath: list.assetPath,
+                            fontSize: cardTitleFontSize,
                             onTap: () async {
                               await Navigator.push(
                                   context,

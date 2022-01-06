@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:stoik_app/widgets/buttons/score_coin.dart';
 
 class SummaryCard extends StatelessWidget {
@@ -8,19 +6,23 @@ class SummaryCard extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.scores,
-      this.isPositive = true})
+      this.isPositive = true,
+      this.fontSize = 16,
+      this.coinSize = 30})
       : super(key: key);
 
   final String title;
   final int scores;
   final bool isPositive;
+  final double fontSize;
+  final double coinSize;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
       shadowColor: Theme.of(context).shadowColor,
-      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Padding(
@@ -31,33 +33,21 @@ class SummaryCard extends StatelessWidget {
           children: [
             ScoreCoin(
               isPositive: isPositive,
+              coinSize: coinSize,
             ),
-            // CircleAvatar(
-            //   radius: 15,
-            //   backgroundColor: isPositive
-            //       ? Colors.greenAccent.shade400
-            //       : Colors.redAccent.shade400,
-            //   child: Icon(
-            //     isPositive
-            //         ? FontAwesomeIcons.thumbsUp
-            //         : FontAwesomeIcons.thumbsDown,
-            //     size: 13,
-            //     color: Colors.black,
-            //   ),
-            // ),
             Text(
               title,
-              style: GoogleFonts.rubik(
-                  fontSize: 15,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline1!
+                  .copyWith(fontSize: fontSize),
             ),
             Text(
               '$scores',
-              style: GoogleFonts.rubik(
-                  fontSize: 15,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline1!
+                  .copyWith(fontSize: fontSize),
             ),
           ],
         ),

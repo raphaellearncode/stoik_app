@@ -29,7 +29,7 @@ class IntroE extends StatelessWidget {
                     TextSpan(
                       text:
                           'Osiągnij `stoicki spokój`,\ngraj, ucz się,\npopraw jakość swojego życia i\n',
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
                           height: 1.2,
                           fontWeight: FontWeight.w200,
                           fontSize: 18),

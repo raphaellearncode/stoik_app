@@ -19,8 +19,7 @@ class DatabaseHelper {
 
     var notesDatabase =
         await openDatabase(path, version: 1, onCreate: _createDb);
-    //todo remove prints
-    print('DATABASE IS INITIALIZED');
+
     return notesDatabase;
   }
 
@@ -36,7 +35,7 @@ class DatabaseHelper {
     $gameId INTEGER PRIMARY KEY AUTOINCREMENT,
     $scoresPositive STRING NOT NULL,
     $scoresNegative STRING NOT NULL, 
-    $gameDate STRING)''');
+    $gameDate REAL)''');
 
     batch.commit();
   }

@@ -8,12 +8,14 @@ class EducationCard extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.onTap,
-      required this.assetPath})
+      required this.assetPath,
+      this.fontSize = 16})
       : super(key: key);
 
   final String title;
   final String assetPath;
   final Function onTap;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,10 @@ class EducationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 50,
+              const Expanded(
+                child: SizedBox(
+                  height: 30,
+                ),
               ),
               ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -50,14 +54,13 @@ class EducationCard extends StatelessWidget {
                   child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5.0, vertical: 2.0),
-                      width: 200,
                       color: Colors.white.withOpacity(0.5),
                       child: Text(
                         title,
-                        style: GoogleFonts.rubik(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1!
+                            .copyWith(fontSize: fontSize),
                       )),
                 ),
               )

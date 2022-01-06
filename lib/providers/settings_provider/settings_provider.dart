@@ -10,7 +10,6 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   init() async {
-    print('LOAD SETTINGS PROVIDER');
     getDiceShuffleTime();
     getGameRounds();
   }
@@ -22,16 +21,12 @@ class SettingsProvider extends ChangeNotifier {
 
   int cardSets = 5;
   int setGameSetOption = 1;
-  //TODO: mailchimp url
-
-  //todo: theme data
   late ThemeData themeData;
 
   getTheme() async {
     return themeData;
   }
 
-  //todo: settings dice shuffle seconds
   DiceShuffleOptions diceOptions = DiceShuffleOptions();
 
   void setDiceShuffleTime(int index) {
@@ -66,13 +61,11 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //todo: settings for card stock
   void cardsInStock() {
     notifyListeners();
   }
 
   CardSetOptions gameRounds = CardSetOptions();
-  //todo how many game rounds
   void setGameRounds(int index) {
     setGameSetOption = index;
     _prefs
@@ -81,24 +74,33 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void isTestingGame(bool isTest) {
+    if (isTest) {
+      cardSets = 1;
+    } else {
+      getGameRounds();
+    }
+    notifyListeners();
+  }
+
   void getGameRounds() async {
     setGameSetOption = await _prefs.restoreInt('gamSetKey', setGameSetOption);
     switch (setGameSetOption) {
       case 0:
-        cardSets = 3;
-        break;
-      case 1:
         cardSets = 5;
         break;
-      case 2:
+      case 1:
         cardSets = 10;
         break;
-      case 3:
+      case 2:
         cardSets = 15;
+        break;
+      case 3:
+        cardSets = 24;
         break;
 
       default:
-        cardSets = 5;
+        cardSets = 1;
     }
   }
 }

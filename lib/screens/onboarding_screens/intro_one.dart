@@ -31,15 +31,10 @@ class IntroA extends StatelessWidget {
                     TextSpan(
                       text:
                           '''dziękujemy za pobranie `STOLIK-a`,\nmamy nadzieję, że ta aplikacja wniesie coś pozytywnego do Twojej codzienności :) \nW kolejnych krokach pokażemy kilka ważnych elementów aplikacji dla większej swobody poruszania się po niej.''',
-                      style: Theme.of(context).textTheme.headline1!.copyWith(
-                          height: 1.5,
-                          fontWeight: FontWeight.w200,
-                          fontSize: 18),
-
-                      // Theme.of(context)
-                      //     .textTheme
-                      //     .bodyText1!
-                      //     .copyWith(fontSize: descriptionFontSize),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(height: 1.5, fontSize: 18),
                     )
                   ]),
             ),
