@@ -65,6 +65,7 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //todo: try future:
   void shuffleDice(int shuffleTime) {
     // Future.delayed(Duration(seconds: shuffleTime), () {
     //   stopDice();
@@ -79,7 +80,7 @@ class GameProvider extends ChangeNotifier {
         isDicePair = true;
         choices = 2;
       }
-      notifyListeners();
+      // notifyListeners();
     });
 
     notifyListeners();

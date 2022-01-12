@@ -137,7 +137,6 @@ class _HomePageState extends State<HomePage>
     ScreenModel(NavModel(title: "Ustawienia", icon: Icons.settings),
         const SettingsScreen()),
   ];
-
   _onPageChange(int page) {
     setState(() {
       _pageController.animateToPage(page,
